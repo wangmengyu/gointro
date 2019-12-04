@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2eb8d5e6-200c-4c85-9253-01fadd564452" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/cmd/externalsort/sort.go" afterDir="false" />
+    <list default="true" id="2eb8d5e6-200c-4c85-9253-01fadd564452" name="Default Changelist" comment="merge data">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/pipelinedemo/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/pipelinedemo/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pipeline/nodes.go" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline/nodes.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -41,6 +39,11 @@
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
   </component>
   <component name="RunManager" selected="Go Build.go build gointro.com/cmd/externalsort">
     <configuration name="go build conc.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
@@ -141,10 +144,10 @@
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state x="276" y="195" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.800/-1920.-205.1920.1080@0.0.1280.800" timestamp="1575423845817" />
-    <state x="233" y="0" width="1017" height="800" key="CommitChangelistDialog2" timestamp="1575439018761">
+    <state x="233" y="0" width="1017" height="800" key="CommitChangelistDialog2" timestamp="1575439086895">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state x="233" y="0" width="1017" height="800" key="CommitChangelistDialog2/0.0.1280.800/-1920.-205.1920.1080@0.0.1280.800" timestamp="1575439018761" />
+    <state x="233" y="0" width="1017" height="800" key="CommitChangelistDialog2/0.0.1280.800/-1920.-205.1920.1080@0.0.1280.800" timestamp="1575439086895" />
     <state x="233" y="23" key="CommitChangelistDialog2/0.23.1280.704/-1920.-182.1920.1057@0.23.1280.704" timestamp="1575421888718" />
     <state x="233" y="23" key="CommitChangelistDialog2/0.23.1280.704@0.23.1280.704" timestamp="1575376023240" />
     <state x="233" y="23" key="CommitChangelistDialog2/0.23.1280.708@0.23.1280.708" timestamp="1575353572970" />
@@ -185,10 +188,10 @@
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state x="141" y="39" key="SettingsEditor/0.0.1280.800/-1920.-205.1920.1080@0.0.1280.800" timestamp="1575422574533" />
-    <state x="250" y="85" key="Vcs.Push.Dialog.v2" timestamp="1575439023279">
+    <state x="250" y="85" key="Vcs.Push.Dialog.v2" timestamp="1575439091331">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state x="250" y="85" key="Vcs.Push.Dialog.v2/0.0.1280.800/-1920.-205.1920.1080@0.0.1280.800" timestamp="1575439023279" />
+    <state x="250" y="85" key="Vcs.Push.Dialog.v2/0.0.1280.800/-1920.-205.1920.1080@0.0.1280.800" timestamp="1575439091331" />
     <state x="250" y="98" key="Vcs.Push.Dialog.v2/0.23.1280.704/-1920.-182.1920.1057@0.23.1280.704" timestamp="1575421892196" />
     <state x="250" y="98" key="Vcs.Push.Dialog.v2/0.23.1280.704@0.23.1280.704" timestamp="1575376030211" />
     <state x="250" y="98" key="Vcs.Push.Dialog.v2/0.23.1280.708@0.23.1280.708" timestamp="1575353577260" />

@@ -147,13 +147,11 @@ func Merge(in1, in2 <-chan int) <-chan int {
 
 // merge multiple channel into one channel
 func MergeN(inputs ...<-chan int) <-chan int {
-	fmt.Println(inputs)
-	fmt.Println("len=", len(inputs))
-	if len(inputs) <= 1 {
-		fmt.Println("return len, inputs[0]", len(inputs), inputs[0])
+
+	if len(inputs) == 1 {
 		return inputs[0]
 	}
 	mid := len(inputs) / 2
-	fmt.Println("len1,len2 = ", len(inputs[:mid]), len(inputs[mid:]))
+
 	return Merge(MergeN(inputs[:mid]...), MergeN(inputs[mid:]...))
 }
