@@ -1,6 +1,8 @@
 package pipeline
 
-import "sort"
+import (
+	"sort"
+)
 
 /**
   get data source channel
@@ -57,6 +59,7 @@ func Merge(in1, in2 <-chan int) <-chan int {
 		v2, ok2 := <-in2
 		for {
 			if !ok1 && !ok2 {
+				//fmt.Println("no data")
 				break
 			}
 			// get v1 or v2 from two channel, only one
