@@ -53,39 +53,29 @@ func Merge(in1, in2 <-chan int) <-chan int {
 	out := make(chan int)
 	//start a goroutine
 	go func() {
-
 		v1, ok1 := <-in1
 		v2, ok2 := <-in2
 		for {
 			if !ok1 && !ok2 {
-				//no one has value
 				break
 			}
-
-			if !ok2 {
-				//only ok1 has value
+			// get v1 or v2 from two channel, only one
+			if !ok2 { // only in1 has value
 				out <- v1
 				v1, ok1 = <-in1
-
-			} else if !ok1 {
-				//only ok2 has value
+			} else if !ok1 { //only in2 has value
 				out <- v2
 				v2, ok2 = <-in2
-
-			} else {
-				//both has value
+			} else { //both in1 and in2 has value . select smaller one to out put
 				if v1 < v2 {
 					out <- v1
 					v1, ok1 = <-in1
-					out <- v2
-					v2, ok2 = <-in2
 				} else {
 					out <- v2
 					v2, ok2 = <-in2
-					out <- v1
-					v1, ok1 = <-in1
 				}
 			}
+
 		}
 		close(out)
 	}()
