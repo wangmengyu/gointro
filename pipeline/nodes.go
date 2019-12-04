@@ -6,6 +6,7 @@ import (
 	"io"
 	"math/rand"
 	"sort"
+	"time"
 )
 
 /**
@@ -27,7 +28,7 @@ func ArraySource(a ...int) <-chan int {
 read data from io.Reader
 */
 func ReaderSource(reader io.Reader, chunkSize int) <-chan int {
-	out := make(chan int)
+	out := make(chan int, 1024)
 	go func() {
 		buffer := make([]byte, 8)
 		bytesRead := 0
@@ -70,11 +71,17 @@ func RandomSource(count int) <-chan int {
 	out := make(chan int)
 	go func() {
 		for i := 0; i < count; i++ {
-			out <- rand.Intn(100)
+			out <- rand.Int()
 		}
 		close(out)
 	}()
 	return out
+}
+
+var startTime time.Time
+
+func Init() {
+	startTime = time.Now()
 }
 
 /**
@@ -84,20 +91,23 @@ func RandomSource(count int) <-chan int {
 */
 func InMemSort(in <-chan int) <-chan int {
 	//create new out channel
-	out := make(chan int)
+	out := make(chan int, 1024)
 	//begin a goroutine to sort data
 	go func() {
-		//get data from channel,put into memory
+		//Read into memory
 		a := make([]int, 0)
 		for i := range in {
 			a = append(a, i)
 		}
+		//log time for read into memo
+		fmt.Println("Read done:", time.Now().Sub(startTime))
 		//sort
 		sort.Ints(a)
+		fmt.Println("InMemSort done:", time.Now().Sub(startTime))
 
 		//range data from memory and put into out channel
 		for _, v := range a {
-			fmt.Println(v)
+			//fmt.Println(v)
 			out <- v
 		}
 		close(out)
@@ -111,7 +121,7 @@ func InMemSort(in <-chan int) <-chan int {
   merge data from two channel, push data to out channel
 */
 func Merge(in1, in2 <-chan int) <-chan int {
-	out := make(chan int)
+	out := make(chan int, 1024)
 	//start a goroutine
 	go func() {
 		v1, ok1 := <-in1
@@ -140,6 +150,7 @@ func Merge(in1, in2 <-chan int) <-chan int {
 
 		}
 		close(out)
+		fmt.Println("Merge done:", time.Now().Sub(startTime))
 	}()
 
 	return out

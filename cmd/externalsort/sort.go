@@ -12,9 +12,9 @@ import (
 */
 func main() {
 
-	p := createPipeline("small.in", 512, 4)
-	writeToFile(p, "small.out")
-	printFile("small.out")
+	p := createPipeline("large.in", 800000000, 4)
+	writeToFile(p, "large.out")
+	printFile("large.out")
 
 }
 
@@ -29,8 +29,13 @@ func printFile(filename string) {
 	defer file.Close()
 
 	p := pipeline.ReaderSource(file, -1)
+	i := 0
 	for v := range p {
+		if i > 100 {
+			break
+		}
 		fmt.Println(v)
+		i++
 	}
 
 }
@@ -61,6 +66,7 @@ func writeToFile(p <-chan int, filename string) {
 func createPipeline(filename string, fileSize, chunkCount int) <-chan int {
 	sortResults := make([]<-chan int, 0)
 	chunkSize := fileSize / chunkCount
+	pipeline.Init()
 	for i := 0; i < chunkCount; i++ {
 		file, err := os.Open(filename)
 		if err != nil {
@@ -72,7 +78,6 @@ func createPipeline(filename string, fileSize, chunkCount int) <-chan int {
 		//create pipeline for read file
 		source := pipeline.ReaderSource(bufio.NewReader(file), chunkSize)
 		res := pipeline.InMemSort(source)
-		fmt.Println("after source:", len(res))
 		//collect sorted pipeline
 		sortResults = append(sortResults, res)
 	}
