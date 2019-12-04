@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gointro.com/pipeline"
 	"os"
+	"strconv"
 )
 
 /**
@@ -12,7 +13,13 @@ import (
 */
 func main() {
 
-	p := createPipeline("large.in", 800000000, 4)
+	/*
+		p := createPipeline("large.in", 800000000, 4)
+		writeToFile(p, "large.out")
+		printFile("large.out")
+	*/
+
+	p := createNetworkPipeline("large.in", 800000000, 4)
 	writeToFile(p, "large.out")
 	printFile("large.out")
 
@@ -82,6 +89,41 @@ func createPipeline(filename string, fileSize, chunkCount int) <-chan int {
 		sortResults = append(sortResults, res)
 	}
 
+	return pipeline.MergeN(sortResults...)
+
+}
+
+/**
+  network version:
+  read from file ,put data into channel
+*/
+func createNetworkPipeline(filename string, fileSize, chunkCount int) <-chan int {
+
+	chunkSize := fileSize / chunkCount
+	pipeline.Init()
+	sortAddr := make([]string, 0)
+	for i := 0; i < chunkCount; i++ {
+		file, err := os.Open(filename)
+		if err != nil {
+			panic(err)
+		}
+		//set pointer of current start pos
+		file.Seek(int64(i*chunkSize), 0)
+
+		//create pipeline for read file
+		source := pipeline.ReaderSource(bufio.NewReader(file), chunkSize)
+
+		//sink data from memory to tcp conn
+		addr := ":" + strconv.Itoa(7000+i)
+		pipeline.NetworkSink(addr, pipeline.InMemSort(source))
+		sortAddr = append(sortAddr, addr)
+	}
+
+	//collect data from network conn into sortResults fo merge
+	sortResults := make([]<-chan int, 0)
+	for _, addr := range sortAddr {
+		sortResults = append(sortResults, pipeline.NetworkSource(addr))
+	}
 	return pipeline.MergeN(sortResults...)
 
 }
