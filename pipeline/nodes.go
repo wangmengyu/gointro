@@ -2,6 +2,7 @@ package pipeline
 
 import (
 	"encoding/binary"
+	"fmt"
 	"io"
 	"math/rand"
 	"sort"
@@ -25,18 +26,21 @@ func ArraySource(a ...int) <-chan int {
 /**
 read data from io.Reader
 */
-func ReaderSource(reader io.Reader) <-chan int {
+func ReaderSource(reader io.Reader, chunkSize int) <-chan int {
 	out := make(chan int)
 	go func() {
+		buffer := make([]byte, 8)
+		bytesRead := 0
 		for {
-			buffer := make([]byte, 8)
 			n, err := reader.Read(buffer)
+			bytesRead += n
 			if n > 0 {
 				//convert byte to int
 				v := int(binary.BigEndian.Uint64(buffer))
 				out <- v
 			}
-			if err != nil {
+			if err != nil || (chunkSize != -1 && bytesRead > chunkSize) {
+				//over chunkSize or already done
 				break
 			}
 		}
@@ -66,7 +70,7 @@ func RandomSource(count int) <-chan int {
 	out := make(chan int)
 	go func() {
 		for i := 0; i < count; i++ {
-			out <- rand.Int()
+			out <- rand.Intn(100)
 		}
 		close(out)
 	}()
@@ -93,6 +97,7 @@ func InMemSort(in <-chan int) <-chan int {
 
 		//range data from memory and put into out channel
 		for _, v := range a {
+			fmt.Println(v)
 			out <- v
 		}
 		close(out)
@@ -138,4 +143,17 @@ func Merge(in1, in2 <-chan int) <-chan int {
 	}()
 
 	return out
+}
+
+// merge multiple channel into one channel
+func MergeN(inputs ...<-chan int) <-chan int {
+	fmt.Println(inputs)
+	fmt.Println("len=", len(inputs))
+	if len(inputs) <= 1 {
+		fmt.Println("return len, inputs[0]", len(inputs), inputs[0])
+		return inputs[0]
+	}
+	mid := len(inputs) / 2
+	fmt.Println("len1,len2 = ", len(inputs[:mid]), len(inputs[mid:]))
+	return Merge(MergeN(inputs[:mid]...), MergeN(inputs[mid:]...))
 }

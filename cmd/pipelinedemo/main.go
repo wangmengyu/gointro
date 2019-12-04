@@ -10,8 +10,8 @@ import (
 func main() {
 
 	//create a file
-	const filename = "large.in"
-	const n = 100000000
+	const filename = "small.in"
+	const n = 64
 	file, err := os.Create(filename)
 	if err != nil {
 		panic(err)
@@ -32,7 +32,7 @@ func main() {
 	defer file.Close()
 
 	//read from file, use bufio.NewReader to speed up reader
-	p = pipeline.ReaderSource(bufio.NewReader(file))
+	p = pipeline.ReaderSource(bufio.NewReader(file), -1)
 
 	i := 0
 	for v := range p {
